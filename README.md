@@ -1,1 +1,0 @@
-# Shakina-A.L-ISEbd-21
