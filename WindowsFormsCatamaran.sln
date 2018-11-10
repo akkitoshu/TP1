@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsCatamaran", "WindowsFormsCatamaran\WindowsFormsCatamaran.csproj", "{3C8A75D1-B734-4AB6-89D7-08BB96090A01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsCatamaran", "WindowsFormsCatamaran\WindowsFormsCatamaran.csproj", "{BE951BF7-1FEE-4592-B240-36E5B78CE688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3C8A75D1-B734-4AB6-89D7-08BB96090A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C8A75D1-B734-4AB6-89D7-08BB96090A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C8A75D1-B734-4AB6-89D7-08BB96090A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C8A75D1-B734-4AB6-89D7-08BB96090A01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE951BF7-1FEE-4592-B240-36E5B78CE688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE951BF7-1FEE-4592-B240-36E5B78CE688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE951BF7-1FEE-4592-B240-36E5B78CE688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE951BF7-1FEE-4592-B240-36E5B78CE688}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {014896AF-1F57-4403-8230-DA48FE3F93A1}
+		SolutionGuid = {8116CE83-B59C-460F-AE0E-A56ED6602EB4}
 	EndGlobalSection
 EndGlobal

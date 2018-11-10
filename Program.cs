@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsCatamaran;
+using WindowsFormsLodka;
 
 namespace WindowsFormsCatamaran
 {
@@ -16,7 +18,7 @@ namespace WindowsFormsCatamaran
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormCatamaran());
+            Application.Run(new FormLodka());
         }
     }
 }

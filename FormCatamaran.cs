@@ -1,46 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsCatamaran;
+using WindowsFormsLodka;
 
 namespace WindowsFormsCatamaran
 {
-    public partial class FormCatamaran : Form
+    public partial class FormLodka : Form
     {
+        private ITransport lodka;
         /// <summary>
         /// Конструктор
         /// </summary>
-        private Catamaran catamaran;
-        public FormCatamaran()
+        public FormLodka()
         {
             InitializeComponent();
         }
+
+
         /// <summary>
-        /// Метод отрисовки катамарана
+        /// Метод отрисовки лодки
         /// </summary>
         private void Draw()
         {
             Bitmap bmp = new Bitmap(pictureBoxCatamaran.Width, pictureBoxCatamaran.Height);
             Graphics gr = Graphics.FromImage(bmp);
-            catamaran.DrawCatamaran(gr);
+            lodka.DrawCatamaran(gr);
             pictureBoxCatamaran.Image = bmp;
         }
         /// <summary>
-        /// Обработка нажатия кнопки "Создать"
+        /// Обработка нажатия кнопки "Создать лодку"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            catamaran = new Catamaran(rnd.Next(200, 400), rnd.Next(500, 1000), Color.Red,
-           Color.DarkRed);
-            catamaran.SetPosition(rnd.Next(25, 100), rnd.Next(25, 100), pictureBoxCatamaran.Width,
+            lodka = new Lodka(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.RosyBrown);
+            lodka.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCatamaran.Width,
+           pictureBoxCatamaran.Height);
+            Draw();
+        }
+        /// <summary>
+        /// Обработка нажатия кнопки "Создать катамаран"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateCatamaran_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            lodka = new Catamaran(rnd.Next(300, 400), rnd.Next(500, 1000), Color.RosyBrown, Color.Cyan, true, true);
+            lodka.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCatamaran.Width,
            pictureBoxCatamaran.Height);
             Draw();
         }
@@ -55,20 +65,20 @@ namespace WindowsFormsCatamaran
             string name = (sender as Button).Name;
             switch (name)
             {
-                case "buttonUp":
-                    catamaran.MoveTransport(Direction.Up);
+                case "Up":
+                    lodka.MoveTransport(Direction.Up);
                     break;
-                case "buttonDown":
-                    catamaran.MoveTransport(Direction.Down);
+                case "Down":
+                    lodka.MoveTransport(Direction.Down);
                     break;
-                case "buttonLeft":
-                    catamaran.MoveTransport(Direction.Left);
+                case "Left":
+                    lodka.MoveTransport(Direction.Left);
                     break;
-                case "buttonRight":
-                    catamaran.MoveTransport(Direction.Right);
+                case "Right":
+                    lodka.MoveTransport(Direction.Right);
                     break;
             }
             Draw();
         }
     }
-}
+}
