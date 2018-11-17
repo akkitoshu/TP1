@@ -8,7 +8,7 @@ namespace WindowsFormsBoats
     /// Параметризованный класс для хранения набора объектов от интерфейса IBoat
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Port <T> where T : class, IBoat
+    public class Port<T> where T : class, IBoat
     {
         /// <summary>
         /// Массив объектов, которые храним
@@ -82,7 +82,7 @@ namespace WindowsFormsBoats
         /// <param name="p">Гавань</param>
         /// <param name="index">Индекс места, с которого пытаемся извлечь объект</param>
         /// <returns></returns>
-       
+
         public static T operator -(Port<T> p, int index)
         {
             if (!p.CheckFreePlace(index))
@@ -136,6 +136,31 @@ namespace WindowsFormsBoats
                     i * _placeSizeWidth + 110, j * _placeSizeHeight);
                 }
                 g.DrawLine(pen, i * _placeSizeWidth, 0, i * _placeSizeWidth, 400);
+            }
+        }
+        /// <summary>
+        /// Индексатор
+        /// </summary>
+        /// <param name="ind"></param>
+        /// <returns></returns>
+        public T this[int ind]
+        {
+            get
+            {
+                if (_places.ContainsKey(ind))
+                {
+                    return _places[ind];
+                }
+                return null;
+            }
+            set
+            {
+                if (CheckFreePlace(ind))
+                {
+                    _places.Add(ind, value);
+                    _places[ind].SetPosition(5 + ind / 5 * _placeSizeWidth + 5, ind % 5 *
+                    _placeSizeHeight + 15, PictureWidth, PictureHeight);
+                }
             }
         }
     }

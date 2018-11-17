@@ -44,5 +44,6 @@ namespace WindowsFormsBoats
         }
         public abstract void DrawBoat(Graphics g);
         public abstract void MoveTransport(Direction direction);
+
     }
 }

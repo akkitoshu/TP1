@@ -1,4 +1,6 @@
-﻿namespace WindowsFormsBoats
+﻿using System;
+
+namespace WindowsFormsBoats
 {
     partial class FormPort
     {
@@ -38,16 +40,23 @@
             this.label1 = new System.Windows.Forms.Label();
             this.listBoxLevels = new System.Windows.Forms.ListBox();
             this.buttonSetBoat = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.загрузитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.загрузитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakeBoat)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBoxPort
             // 
             this.pictureBoxPort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxPort.BackgroundImage")));
             this.pictureBoxPort.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBoxPort.Location = new System.Drawing.Point(0, 3);
+            this.pictureBoxPort.Location = new System.Drawing.Point(0, 27);
             this.pictureBoxPort.Name = "pictureBoxPort";
             this.pictureBoxPort.Size = new System.Drawing.Size(800, 465);
             this.pictureBoxPort.TabIndex = 0;
@@ -65,6 +74,7 @@
             this.groupBox1.Size = new System.Drawing.Size(210, 183);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // pictureBoxTakeBoat
             // 
@@ -73,6 +83,7 @@
             this.pictureBoxTakeBoat.Size = new System.Drawing.Size(195, 84);
             this.pictureBoxTakeBoat.TabIndex = 4;
             this.pictureBoxTakeBoat.TabStop = false;
+            this.pictureBoxTakeBoat.Click += new System.EventHandler(this.pictureBoxTakeBoat_Click);
             // 
             // buttonTake
             // 
@@ -112,7 +123,7 @@
             // listBoxLevels
             // 
             this.listBoxLevels.FormattingEnabled = true;
-            this.listBoxLevels.Location = new System.Drawing.Point(824, 12);
+            this.listBoxLevels.Location = new System.Drawing.Point(824, 27);
             this.listBoxLevels.Name = "listBoxLevels";
             this.listBoxLevels.Size = new System.Drawing.Size(141, 121);
             this.listBoxLevels.TabIndex = 4;
@@ -128,6 +139,48 @@
             this.buttonSetBoat.UseVisualStyleBackColor = true;
             this.buttonSetBoat.Click += new System.EventHandler(this.buttonSetBoat_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.файлToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1028, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // файлToolStripMenuItem
+            // 
+            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.загрузитьToolStripMenuItem,
+            this.загрузитьToolStripMenuItem1});
+            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.файлToolStripMenuItem.Text = "Файл";
+            // 
+            // загрузитьToolStripMenuItem
+            // 
+            this.загрузитьToolStripMenuItem.Name = "загрузитьToolStripMenuItem";
+            this.загрузитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.загрузитьToolStripMenuItem.Text = "Загрузить";
+            this.загрузитьToolStripMenuItem.Click += new System.EventHandler(this.загрузитьToolStripMenuItem_Click);
+            // 
+            // загрузитьToolStripMenuItem1
+            // 
+            this.загрузитьToolStripMenuItem1.Name = "загрузитьToolStripMenuItem1";
+            this.загрузитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.загрузитьToolStripMenuItem1.Text = "Сохранить";
+            this.загрузитьToolStripMenuItem1.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "txt file | *.txt";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "txt file | *.txt";
+            // 
             // FormPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +190,8 @@
             this.Controls.Add(this.listBoxLevels);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBoxPort);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormPort";
             this.Text = "Гавань";
             this.Load += new System.EventHandler(this.FormPort_Load);
@@ -144,8 +199,25 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakeBoat)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
+        }
+
+        private void pictureBoxTakeBoat_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void FormPort_Load(object sender, EventArgs e)
+        {
         }
 
         #endregion
@@ -159,5 +231,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBoxLevels;
         private System.Windows.Forms.Button buttonSetBoat;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem загрузитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem загрузитьToolStripMenuItem1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
