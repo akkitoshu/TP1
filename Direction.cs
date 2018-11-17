@@ -1,11 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WindowsFormsCatamaran
+﻿namespace WindowsFormsBoats
 {
     public enum Direction
     {
@@ -14,5 +7,5 @@ namespace WindowsFormsCatamaran
         Left,
         Right
     }
-
 }
+

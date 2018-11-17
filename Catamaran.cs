@@ -1,33 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using WindowsFormsCatamaran;
+﻿using System.Drawing;
 
-namespace WindowsFormsLodka
+namespace WindowsFormsBoats
 {
-    /// <summary>
-    /// Класс отрисовки катамарана
-    /// </summary>
-
-    public class Catamaran : Lodka
+    public class Catamaran : Boat
     {
-        /// <summary>
-        /// Ширина окна отрисовки
-        /// </summary>
-        private int pictureWidth;
-        // Высота окна отрисовки
-        private int pictureHeight;
-        /// <summary>
-        /// Ширина отрисовки катамарана
-        /// </summary>
-        protected const int LodkaWidth = 100;
-        /// <summary>
-        /// Ширина отрисовки катамарана
-        /// </summary>
-        protected const int LodkaHeight = 60;
         /// <summary>
         /// Максимальная скорость
         /// </summary>
@@ -58,8 +34,7 @@ namespace WindowsFormsLodka
         /// Признак наличия правого груза
         ///  </summary>
         public bool RightGruz { private set; get; }
-        protected int PictureWidth { get => pictureWidth; set => pictureWidth = value; }
-        protected int PictureHeight { get => pictureHeight; set => pictureHeight = value; }
+
 
         /// 
         /// </summary>
@@ -76,32 +51,25 @@ namespace WindowsFormsLodka
             DopColor = dopColor;
         }
 
-
         /// <summary>
         /// Отрисовка катамарана
         /// </summary>
         /// <param name="g"></param>
-        public override void DrawCatamaran(Graphics g)
+        public override void DrawBoat(Graphics g)
         {
-            base.DrawCatamaran(g);
-            Brush machta = new SolidBrush(Color.Black);
-            g.FillRectangle(machta, _startPosX + 120, _startPosY + 20, 5, 30);
+            base.DrawBoat(g);
+            Brush machta = new SolidBrush(MainColor);
+            g.FillRectangle(machta, _startPosX + 55, _startPosY + 20, 5, 30);
             if (LeftGruz)
             {
                 Brush gruz = new SolidBrush(DopColor);
-                g.FillEllipse(gruz, _startPosX + 40, _startPosY + 13, 150, 15);
+                g.FillEllipse(gruz, _startPosX+10, _startPosY + 13, 95, 15);
             }
             if (RightGruz)
             {
                 Brush gruz2 = new SolidBrush(DopColor);
-                g.FillEllipse(gruz2, _startPosX + 40, _startPosY + 45, 150, 15);
+                g.FillEllipse(gruz2, _startPosX+10 , _startPosY + 45, 95, 15);
             }
-
-
-
         }
     }
 }
-
-
-

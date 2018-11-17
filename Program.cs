@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsCatamaran;
-using WindowsFormsLodka;
 
-namespace WindowsFormsCatamaran
+namespace WindowsFormsBoats
 {
     static class Program
     {
@@ -18,7 +13,7 @@ namespace WindowsFormsCatamaran
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLodka());
+            Application.Run(new FormPort());
         }
     }
 }
