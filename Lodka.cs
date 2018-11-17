@@ -1,92 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsFormsLodka;
+﻿using System.Drawing;
 
-namespace WindowsFormsCatamaran
+namespace WindowsFormsBoats
 {
-    /// <summary>
-    /// Класс отрисовки лодки
-    /// </summary>
-    public class Lodka : Vehicle
+    public abstract class Lodka : IBoat
     {
-
         /// <summary>
-        /// Ширина отрисовки судна
+        /// Левая координата отрисовки лодки
         /// </summary>
-        protected const int lodkaWidth = 100;
+        protected float _startPosX;
         /// <summary>
-        /// Ширина отрисовки судна
+        /// Правая кооридната отрисовки лодки 
         /// </summary>
-        protected const int lodkaHeight = 60;
-
-        public new Color MainColor { set; get; }
+        protected float _startPosY;
         /// <summary>
-        /// Конструктор
+        /// Ширина окна отрисовки
         /// </summary>
-        ///  /// <param name="maxSpeed">Максимальная скорость</param>
-        /// <param name="weight">Вес лодки</param>
-        /// <param name="mainColor">Основной цвет лодки</param>
-        ///   ///  /// <param name="parus">Признак наличия паруса</param>
-        public Lodka(int maxSpeed, float weight, Color mainColor)
+        protected int _pictureWidth;
+        //Высота окна отрисовки
+        protected int _pictureHeight;
+        /// <summary>
+        /// Максимальная скорость
+        /// </summary>
+        public int MaxSpeed { protected set; get; }
+        /// <summary>
+        /// Вес лодки
+        /// </summary>
+        public float Weight { protected set; get; }
+        /// <summary>
+        /// Основной цвет
+        /// </summary>
+        public Color MainColor { protected set; get; }
+        public void SetPosition(int x, int y, int width, int height)
         {
-            MaxSpeed = maxSpeed;
-            Weight = weight;
-            MainColor = mainColor;
-
-
+            _startPosX = x;
+            _startPosY = y;
+            _pictureWidth = width;
+            _pictureHeight = height;
         }
-        public override void MoveTransport(Direction direction)
-        {
-            float step = MaxSpeed * 100 / Weight;
-            switch (direction)
-            {
-                // вправо
-                case Direction.Right:
-                    if (_startPosX + step < _pictureWidth - lodkaWidth - 100)
-                    {
-                        _startPosX += step;
-                    }
-                    break;
-                //влево
-                case Direction.Left:
-                    if (_startPosX - step > 0)
-                    {
-                        _startPosX -= step;
-                    }
-                    break;
-                //вверх
-                case Direction.Up:
-                    if (_startPosY - step > 15)
-                    {
-                        _startPosY -= step;
-                    }
-                    break;
-                //вниз
-                case Direction.Down:
-                    if (_startPosY + step < _pictureHeight - lodkaHeight)
-                    {
-                        _startPosY += step;
-                    }
-                    break;
-            }
-        }
-
-        public override void DrawCatamaran(Graphics g)
-        {
-
-            Brush corpus = new SolidBrush(Color.DarkSlateGray);
-            g.FillRectangle(corpus, _startPosX + 80, _startPosY + 20, 80, 30);
-            g.FillEllipse(corpus, _startPosX + 119, _startPosY + 20, 80, 30);
-            g.FillEllipse(corpus, _startPosX + 40, _startPosY + 20, 80, 30);
-            Brush bort = new SolidBrush(MainColor);
-            g.FillRectangle(bort, _startPosX + 60, _startPosY + 20, 115, 5);
-            g.FillRectangle(bort, _startPosX + 60, _startPosY + 48, 115, 5);
-
-        }
+        public abstract void DrawBoat(Graphics g);
+        public abstract void MoveTransport(Direction direction);
     }
 }
-

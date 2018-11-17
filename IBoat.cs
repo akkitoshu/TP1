@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsFormsLodka;
+﻿using System.Drawing;
 
-namespace WindowsFormsCatamaran
+namespace WindowsFormsBoats
 {
-    interface ITransport
+    public interface IBoat
     {
-        /// <summary>
         /// Установка позиции катамарана
         /// </summary>
         /// <param name="x">Координата X</param>
@@ -18,17 +11,13 @@ namespace WindowsFormsCatamaran
         /// <param name="width">Ширина картинки</param>
         /// <param name="height">Высота картинки</param>
         void SetPosition(int x, int y, int width, int height);
-        /// <summary>
         /// Изменение направления пермещения
         /// </summary>
         /// <param name="direction">Направление</param>
         void MoveTransport(Direction direction);
-        /// <summary>
         /// Отрисовка катамарана
         /// </summary>
         /// <param name="g"></param>
-        void DrawCatamaran(Graphics g);
+        void DrawBoat(Graphics g);
     }
-
 }
-
