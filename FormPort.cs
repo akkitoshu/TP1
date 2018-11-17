@@ -125,12 +125,9 @@ namespace WindowsFormsBoats
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-}
         private void listBoxLevels_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             Draw();
         }
-    }
-  
-    
+    }   
 }
