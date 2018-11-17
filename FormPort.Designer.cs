@@ -140,7 +140,6 @@
             this.Controls.Add(this.pictureBoxPort);
             this.Name = "FormPort";
             this.Text = "Гавань";
-            this.Load += new System.EventHandler(this.FormPort_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPort)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
