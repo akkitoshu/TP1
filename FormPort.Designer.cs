@@ -85,7 +85,6 @@
             this.groupBox1.Size = new System.Drawing.Size(210, 183);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // pictureBoxTakeBoat
             // 
@@ -94,7 +93,6 @@
             this.pictureBoxTakeBoat.Size = new System.Drawing.Size(195, 84);
             this.pictureBoxTakeBoat.TabIndex = 4;
             this.pictureBoxTakeBoat.TabStop = false;
-            this.pictureBoxTakeBoat.Click += new System.EventHandler(this.pictureBoxTakeBoat_Click);
             // 
             // buttonTake
             // 
