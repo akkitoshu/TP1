@@ -41,7 +41,7 @@ namespace WindowsFormsBoats
         /// 
         ///  /// <param name="engine">Признак наличия двигателя</param>
         public Catamaran(int maxSpeed, float weight, Color mainColor, Color dopColor, bool gruzleft, bool gruzright) :
-            base(maxSpeed, weight, dopColor)
+            base(maxSpeed, weight, mainColor)
         {
             MaxSpeed = maxSpeed;
             Weight = weight;
