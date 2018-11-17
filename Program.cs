@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsBoats
 {
+    public delegate void boatDelegate(IBoat boat);
     static class Program
     {
         /// <summary>

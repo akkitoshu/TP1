@@ -16,6 +16,10 @@ namespace WindowsFormsBoats
         /// </summary>
         MultiLevelParking parking;
         /// <summary>
+        /// Форма для добавления
+        /// </summary>
+        FormBoatConfig form;
+        /// <summary>
         /// Количество уровней-парковок
         /// </summary>
         private const int countLevel = 5;
@@ -49,7 +53,7 @@ namespace WindowsFormsBoats
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonPortCatamaran_Click(object sender, EventArgs e)
+  /*      private void buttonPortCatamaran_Click(object sender, EventArgs e)
         {
             if (listBoxLevels.SelectedIndex > -1)
             {
@@ -66,10 +70,10 @@ namespace WindowsFormsBoats
                     Draw();
                 }
             }
-        }
+        }*/
 
 
-        private void buttonPortBoat_Click(object sender, EventArgs e)
+       /* private void buttonPortBoat_Click(object sender, EventArgs e)
         {
             if (listBoxLevels.SelectedIndex > -1)
             {
@@ -90,7 +94,7 @@ namespace WindowsFormsBoats
                     }
                 }
             }
-        }
+        }*/
 
         private void buttonTake_Click(object sender, EventArgs e)
         {
@@ -134,7 +138,38 @@ namespace WindowsFormsBoats
         {
             Draw();
         }
+
+
+    /// <summary>
+    /// Обработка нажатия кнопки "Добавить автомобиль"
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonSetBoat_Click(object sender, EventArgs e)
+    {
+        form = new FormBoatConfig();
+        form.AddEvent(AddBoat);
+        form.Show();
     }
-  
-    
-}
+
+        /// <summary>
+        /// Метод добавления машины
+        /// </summary>
+        /// <param name="car"></param>
+        private void AddBoat(IBoat boat)
+        {
+            if (boat != null && listBoxLevels.SelectedIndex > -1)
+            {
+                int place = parking[listBoxLevels.SelectedIndex] + boat;
+                if (place > -1)
+                {
+                    Draw();
+                }
+                else
+                {
+                    MessageBox.Show("Машину не удалось поставить");
+                }
+            }
+        }
+    }
+}
