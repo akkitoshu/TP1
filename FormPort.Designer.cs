@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.listBoxLevels = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTakeBoat)).BeginInit();
@@ -55,7 +56,7 @@
             // 
             // buttonPortBoat
             // 
-            this.buttonPortBoat.Location = new System.Drawing.Point(824, 36);
+            this.buttonPortBoat.Location = new System.Drawing.Point(824, 155);
             this.buttonPortBoat.Name = "buttonPortBoat";
             this.buttonPortBoat.Size = new System.Drawing.Size(150, 23);
             this.buttonPortBoat.TabIndex = 1;
@@ -65,7 +66,7 @@
             // 
             // buttonPortCatamaran
             // 
-            this.buttonPortCatamaran.Location = new System.Drawing.Point(824, 65);
+            this.buttonPortCatamaran.Location = new System.Drawing.Point(824, 196);
             this.buttonPortCatamaran.Name = "buttonPortCatamaran";
             this.buttonPortCatamaran.Size = new System.Drawing.Size(150, 35);
             this.buttonPortCatamaran.TabIndex = 2;
@@ -129,11 +130,21 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Забрать лодку";
             // 
+            // listBoxLevels
+            // 
+            this.listBoxLevels.FormattingEnabled = true;
+            this.listBoxLevels.Location = new System.Drawing.Point(824, 12);
+            this.listBoxLevels.Name = "listBoxLevels";
+            this.listBoxLevels.Size = new System.Drawing.Size(141, 121);
+            this.listBoxLevels.TabIndex = 4;
+            this.listBoxLevels.SelectedIndexChanged += new System.EventHandler(this.listBoxLevels_SelectedIndexChanged_1);
+            // 
             // FormPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1028, 461);
+            this.Controls.Add(this.listBoxLevels);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonPortCatamaran);
             this.Controls.Add(this.buttonPortBoat);
@@ -159,5 +170,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.MaskedTextBox maskedTextBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listBoxLevels;
     }
 }

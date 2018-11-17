@@ -45,7 +45,6 @@ namespace WindowsFormsBoats
         {
             MaxSpeed = maxSpeed;
             Weight = weight;
-            MainColor = mainColor;
             LeftGruz = gruzleft;
             RightGruz = gruzright;
             DopColor = dopColor;
@@ -58,7 +57,7 @@ namespace WindowsFormsBoats
         public override void DrawBoat(Graphics g)
         {
             base.DrawBoat(g);
-            Brush machta = new SolidBrush(MainColor);
+            Brush machta = new SolidBrush(Color.Brown);
             g.FillRectangle(machta, _startPosX + 55, _startPosY + 20, 5, 30);
             if (LeftGruz)
             {
