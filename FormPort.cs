@@ -80,21 +80,6 @@ namespace WindowsFormsBoats
                 Draw();
             }
         }
-
-        private void FormPort_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBoxTakeBoat_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
   
     
