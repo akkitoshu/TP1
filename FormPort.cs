@@ -124,10 +124,6 @@ namespace WindowsFormsBoats
                 }
             }
         }
-        private void FormPort_Load(object sender, EventArgs e)
-        {
-
-        }
         /// <summary>
         /// Метод обработки выбора элемента на listBoxLevels
         /// </summary>
@@ -172,4 +168,4 @@ namespace WindowsFormsBoats
             }
         }
     }
-}
+}
