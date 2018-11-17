@@ -12,14 +12,24 @@ namespace WindowsFormsBoats
     public partial class FormPort : Form
     {
         /// <summary>
-        /// Объект от класса-гавани
+        /// Объект от класса многоуровневой парковки
         /// </summary>
-        Port<IBoat> parking;
+        MultiLevelParking parking;
+        /// <summary>
+        /// Количество уровней-парковок
+        /// </summary>
+        private const int countLevel = 5;
         public FormPort()
         {
             InitializeComponent();
-            parking = new Port<IBoat>(20, pictureBoxPort.Width, pictureBoxPort.Height);
-            Draw();
+            parking = new MultiLevelParking(countLevel, pictureBoxPort.Width,
+           pictureBoxPort.Height);
+            //заполнение listBox
+            for (int i = 0; i < countLevel; i++)
+            {
+                listBoxLevels.Items.Add("Уровень " + (i + 1));
+            }
+            listBoxLevels.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -27,73 +37,102 @@ namespace WindowsFormsBoats
         /// </summary>
         private void Draw()
         {
-            Bitmap bmp = new Bitmap(pictureBoxPort.Width, pictureBoxPort.Height);
-            Graphics gr = Graphics.FromImage(bmp);
-            parking.Draw(gr);
-            pictureBoxPort.Image = bmp;
-        }
-
-        private void buttonPortCatamaran_Click(object sender, EventArgs e)
-        {
-            ColorDialog dialog = new ColorDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                var catamaran = new Boat (100, 1000, dialog.Color);
-                int place = parking + catamaran;
-                Draw();
+            if (listBoxLevels.SelectedIndex > -1)
+            {//если выбран один из пуктов в listBox (при старте программы ни один пункт  не будет выбран и может возникнуть ошибка, если мы попытаемся обратиться к элементу  listBox)
+                Bitmap bmp = new Bitmap(pictureBoxPort.Width, pictureBoxPort.Height);
+                Graphics gr = Graphics.FromImage(bmp);
+                parking[listBoxLevels.SelectedIndex].Draw(gr);
+                pictureBoxPort.Image = bmp;
             }
         }
 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPortCatamaran_Click(object sender, EventArgs e)
+        {
+            if (listBoxLevels.SelectedIndex > -1)
+            {
+                ColorDialog dialog = new ColorDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var catamaran = new Boat(100, 1000, dialog.Color);
+                    int place = parking[listBoxLevels.SelectedIndex] + catamaran;
+                    if (place == -1)
+                    {
+                        MessageBox.Show("Нет свободных мест", "Ошибка",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    Draw();
+                }
+            }
+        }
+
+
         private void buttonPortBoat_Click(object sender, EventArgs e)
         {
-            ColorDialog dialog = new ColorDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (listBoxLevels.SelectedIndex > -1)
             {
-                ColorDialog dialogDop = new ColorDialog();
-                if (dialogDop.ShowDialog() == DialogResult.OK)
+                ColorDialog dialog = new ColorDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true);
-                    int place = parking + catamaran;
-                    Draw();
+                    ColorDialog dialogDop = new ColorDialog();
+                    if (dialogDop.ShowDialog() == DialogResult.OK)
+                    {
+                        var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true); 
+                        int place = parking[listBoxLevels.SelectedIndex] + catamaran;
+                        if (place == -1)
+                        {
+                            MessageBox.Show("Нет свободных мест", "Ошибка",
+                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        Draw();
+                    }
                 }
             }
         }
 
         private void buttonTake_Click(object sender, EventArgs e)
         {
-            if (maskedTextBox1.Text != "")
+            if (listBoxLevels.SelectedIndex > -1)
             {
-                var boat = parking - Convert.ToInt32(maskedTextBox1.Text);
-                if (boat != null)
+                if (maskedTextBox1.Text != "")
                 {
-                    Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width, pictureBoxTakeBoat.Height);
-                    Graphics gr = Graphics.FromImage(bmp);
-                    boat.SetPosition(5, 5, pictureBoxTakeBoat.Width, pictureBoxTakeBoat.Height);
-                    boat.DrawBoat(gr);
-                    pictureBoxTakeBoat.Image = bmp;
+                    var boat = parking[listBoxLevels.SelectedIndex] -
+                   Convert.ToInt32(maskedTextBox1.Text);
+                    if (boat != null)
+                    {
+                        Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width,
+                       pictureBoxTakeBoat.Height);
+                        Graphics gr = Graphics.FromImage(bmp);
+                        boat.SetPosition(5, 5, pictureBoxTakeBoat.Width,
+                       pictureBoxTakeBoat.Height);
+                        boat.DrawBoat(gr);
+                        pictureBoxTakeBoat.Image = bmp;
+                    }
+                    else
+                    {
+                        Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width,
+                       pictureBoxTakeBoat.Height);
+                        pictureBoxTakeBoat.Image = bmp;
+                    }
+                    Draw();
                 }
-                else
-                {
-                    Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width, pictureBoxTakeBoat.Height);
-                    pictureBoxTakeBoat.Image = bmp;
-                }
-                Draw();
             }
         }
-
         private void FormPort_Load(object sender, EventArgs e)
         {
 
         }
+        /// <summary>
+        /// Метод обработки выбора элемента на listBoxLevels
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
-        private void pictureBoxTakeBoat_Click(object sender, EventArgs e)
+        private void listBoxLevels_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
+            Draw();
         }
     }
   
