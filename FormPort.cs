@@ -49,53 +49,7 @@ namespace WindowsFormsBoats
                 parking[listBoxLevels.SelectedIndex].Draw(gr);
                 pictureBoxPort.Image = bmp;
             }
-        }
-
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-  /*      private void buttonPortCatamaran_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var catamaran = new Boat(100, 1000, dialog.Color);
-                    int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                    if (place == -1)
-                    {
-                        MessageBox.Show("Нет свободных мест", "Ошибка",
-                       MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Draw();
-                }
-            }
-        }*/
-
-
-       /* private void buttonPortBoat_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    ColorDialog dialogDop = new ColorDialog();
-                    if (dialogDop.ShowDialog() == DialogResult.OK)
-                    {
-                        var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true); 
-                        int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                        if (place == -1)
-                        {
-                            MessageBox.Show("Нет свободных мест", "Ошибка",
-                           MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        Draw();
-                    }
-                }
-            }
-        }*/
+       }
 
         private void buttonTake_Click(object sender, EventArgs e)
         {
