@@ -58,11 +58,11 @@ namespace WindowsFormsBoats
         }
         public override void DrawBoat(Graphics g)
         {
-            Brush corpus = new SolidBrush(Color.DarkSlateGray);
+            Brush corpus = new SolidBrush(MainColor);
             g.FillRectangle(corpus, _startPosX + 30, _startPosY + 20, 75, 30);
             g.FillEllipse(corpus, _startPosX + 79, _startPosY + 20, 40, 30);
             g.FillEllipse(corpus, _startPosX , _startPosY + 20, 40, 30);
-            Brush bort = new SolidBrush(MainColor);
+            Brush bort = new SolidBrush(Color.Brown);
             g.FillRectangle(bort, _startPosX + 10, _startPosY + 20, 95, 5);
             g.FillRectangle(bort, _startPosX + 10, _startPosY + 48, 95, 5);
         }

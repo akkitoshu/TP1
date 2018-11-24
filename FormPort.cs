@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,10 @@ namespace WindowsFormsBoats
         /// Объект от класса многоуровневой парковки
         /// </summary>
         MultiLevelParking parking;
+        /// <summary>
+        /// Форма для добавления
+        /// </summary>
+        FormBoatConfig form;
         /// <summary>
         /// Количество уровней-парковок
         /// </summary>
@@ -44,53 +49,7 @@ namespace WindowsFormsBoats
                 parking[listBoxLevels.SelectedIndex].Draw(gr);
                 pictureBoxPort.Image = bmp;
             }
-        }
-
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonPortCatamaran_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var catamaran = new Boat(100, 1000, dialog.Color);
-                    int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                    if (place == -1)
-                    {
-                        MessageBox.Show("Нет свободных мест", "Ошибка",
-                       MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Draw();
-                }
-            }
-        }
-
-
-        private void buttonPortBoat_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    ColorDialog dialogDop = new ColorDialog();
-                    if (dialogDop.ShowDialog() == DialogResult.OK)
-                    {
-                        var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true); 
-                        int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                        if (place == -1)
-                        {
-                            MessageBox.Show("Нет свободных мест", "Ошибка",
-                           MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        Draw();
-                    }
-                }
-            }
-        }
+       }
 
         private void buttonTake_Click(object sender, EventArgs e)
         {
@@ -125,9 +84,43 @@ namespace WindowsFormsBoats
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
         private void listBoxLevels_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             Draw();
         }
-    }   
+
+
+    /// <summary>
+    /// Обработка нажатия кнопки "Добавить автомобиль"
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonSetBoat_Click(object sender, EventArgs e)
+    {
+        form = new FormBoatConfig();
+        form.AddEvent(AddBoat);
+        form.Show();
+    }
+
+        /// <summary>
+        /// Метод добавления машины
+        /// </summary>
+        /// <param name="car"></param>
+        private void AddBoat(IBoat boat)
+        {
+            if (boat != null && listBoxLevels.SelectedIndex > -1)
+            {
+                int place = parking[listBoxLevels.SelectedIndex] + boat;
+                if (place > -1)
+                {
+                    Draw();
+                }
+                else
+                {
+                    MessageBox.Show("Машину не удалось поставить");
+                }
+            }
+        }
+    }
 }

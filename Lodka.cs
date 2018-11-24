@@ -30,6 +30,11 @@ namespace WindowsFormsBoats
         /// Основной цвет
         /// </summary>
         public Color MainColor { protected set; get; }
+
+        public void SetMainColor(Color color)
+        {
+            MainColor = color;
+        }
         public void SetPosition(int x, int y, int width, int height)
         {
             _startPosX = x;
