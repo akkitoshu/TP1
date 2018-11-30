@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace WindowsFormsBoats
 {
-    public class Catamaran : Boat
+    public class Catamaran : Boat, IComparable<Catamaran>, IEquatable<Catamaran>
     {
         /// <param name="dopColor">Дополнительный цвет катамарана</param>
         public Color DopColor { set; get; }
@@ -72,6 +72,89 @@ namespace WindowsFormsBoats
         public override string ToString()
         {
             return base.ToString() + ";" + DopColor.Name + ";" + LeftGruz + ";" + RightGruz;
-        }
+        }
+
+        /// <summary>
+        /// Метод интерфейса IComparable для класса Catamaran
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Catamaran other)
+        {
+            var res = (this is Boat).CompareTo(other is Boat);
+            if (res != 0)
+            {
+                return res;
+            }
+            if (DopColor != other.DopColor)
+            {
+                DopColor.Name.CompareTo(other.DopColor.Name);
+            }
+            if (LeftGruz != other.LeftGruz)
+            {
+                return LeftGruz.CompareTo(other.LeftGruz);
+            }
+            if (RightGruz != other.RightGruz)
+            {
+                return RightGruz.CompareTo(other.RightGruz);
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Метод интерфейса IEquatable для класса Catamaran
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Catamaran other)
+        {
+            var res = (this as Boat).Equals(other as Boat);
+            if (!res)
+            {
+                return res;
+            }
+            if (DopColor != other.DopColor)
+            {
+                return false;
+            }
+            if (LeftGruz != other.LeftGruz)
+            {
+                return false;
+            }
+            if (RightGruz != other.RightGruz)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Перегрузка метода от object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Catamaran carObj = obj as Catamaran;
+            if (carObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(carObj);
+            }
+        }
+        /// <summary>
+        /// Перегрузка метода от object
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
+
