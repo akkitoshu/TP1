@@ -74,7 +74,6 @@ namespace WindowsFormsBoats
             this.groupBox1.Size = new System.Drawing.Size(210, 183);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // pictureBoxTakeBoat
             // 
@@ -83,7 +82,6 @@ namespace WindowsFormsBoats
             this.pictureBoxTakeBoat.Size = new System.Drawing.Size(195, 84);
             this.pictureBoxTakeBoat.TabIndex = 4;
             this.pictureBoxTakeBoat.TabStop = false;
-            this.pictureBoxTakeBoat.Click += new System.EventHandler(this.pictureBoxTakeBoat_Click);
             // 
             // buttonTake
             // 
@@ -127,7 +125,7 @@ namespace WindowsFormsBoats
             this.listBoxLevels.Name = "listBoxLevels";
             this.listBoxLevels.Size = new System.Drawing.Size(141, 121);
             this.listBoxLevels.TabIndex = 4;
-            this.listBoxLevels.SelectedIndexChanged += new System.EventHandler(this.listBoxLevels_SelectedIndexChanged_1);
+            this.listBoxLevels.SelectedIndexChanged += new System.EventHandler(this.listBoxLevels_SelectedIndexChanged);
             // 
             // buttonSetBoat
             // 
@@ -163,14 +161,14 @@ namespace WindowsFormsBoats
             this.загрузитьToolStripMenuItem.Name = "загрузитьToolStripMenuItem";
             this.загрузитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.загрузитьToolStripMenuItem.Text = "Загрузить";
-            this.загрузитьToolStripMenuItem.Click += new System.EventHandler(this.загрузитьToolStripMenuItem_Click);
+            this.загрузитьToolStripMenuItem.Click += new System.EventHandler(this.ЗагрузитьToolStripMenuItem_Click);
             // 
             // загрузитьToolStripMenuItem1
             // 
             this.загрузитьToolStripMenuItem1.Name = "загрузитьToolStripMenuItem1";
             this.загрузитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.загрузитьToolStripMenuItem1.Text = "Сохранить";
-            this.загрузитьToolStripMenuItem1.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            this.загрузитьToolStripMenuItem1.Click += new System.EventHandler(this.СохранитьToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -205,19 +203,6 @@ namespace WindowsFormsBoats
 
         }
 
-        private void pictureBoxTakeBoat_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void FormPort_Load(object sender, EventArgs e)
-        {
-        }
 
         #endregion
 

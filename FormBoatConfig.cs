@@ -20,7 +20,7 @@ namespace WindowsFormsBoats
         /// <summary>
         /// Событие
         /// </summary>
-        private event boatDelegate eventAddBoat;
+        private event boatDelegate EventAddBoat;
         public FormBoatConfig()
         {
             InitializeComponent();
@@ -56,13 +56,13 @@ namespace WindowsFormsBoats
         /// <param name="ev"></param>
         public void AddEvent(boatDelegate ev)
         {
-            if (eventAddBoat == null)
+            if (EventAddBoat == null)
             {
-                eventAddBoat = new boatDelegate(ev);
+                EventAddBoat = new boatDelegate(ev);
             }
             else
             {
-                eventAddBoat += ev;
+                EventAddBoat += ev;
             }
         }
 
@@ -185,13 +185,8 @@ DragDropEffects.Copy);
         /// <param name="e"></param>
         private void AddBoat_Click(object sender, EventArgs e)
         {
-            eventAddBoat?.Invoke(boat);
+            EventAddBoat?.Invoke(boat);
             Close();
-        }
-
-        private void AddBoat_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }
