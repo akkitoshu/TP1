@@ -1,11 +1,6 @@
-
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using NLog;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WindowsFormsBoats
@@ -24,9 +19,15 @@ namespace WindowsFormsBoats
         /// Количество уровней-парковок
         /// </summary>
         private const int countLevel = 5;
+
+        /// <summary>
+        /// Логгер
+        /// </summary>
+        private Logger logger;
         public FormPort()
         {
             InitializeComponent();
+            logger = LogManager.GetCurrentClassLogger();
             parking = new MultiLevelParking(countLevel, pictureBoxPort.Width,
            pictureBoxPort.Height);
             //заполнение listBox
@@ -50,63 +51,21 @@ namespace WindowsFormsBoats
                 pictureBoxPort.Image = bmp;
             }
         }
-
+        /// <summary>
+        /// Обработка нажатия кнопки "Забрать"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonPortCatamaran_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var catamaran = new Boat(100, 1000, dialog.Color);
-                    int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                    if (place == -1)
-                    {
-                        MessageBox.Show("Нет свободных мест", "Ошибка",
-                       MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Draw();
-                }
-            }
-        }
-
-
-        private void buttonPortBoat_Click(object sender, EventArgs e)
-        {
-            if (listBoxLevels.SelectedIndex > -1)
-            {
-                ColorDialog dialog = new ColorDialog();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    ColorDialog dialogDop = new ColorDialog();
-                    if (dialogDop.ShowDialog() == DialogResult.OK)
-                    {
-                        var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true); 
-                        int place = parking[listBoxLevels.SelectedIndex] + catamaran;
-                        if (place == -1)
-                        {
-                            MessageBox.Show("Нет свободных мест", "Ошибка",
-                           MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        Draw();
-                    }
-                }
-            }
-        }
-
         private void buttonTake_Click(object sender, EventArgs e)
         {
             if (listBoxLevels.SelectedIndex > -1)
             {
                 if (maskedTextBox1.Text != "")
                 {
-                    var boat = parking[listBoxLevels.SelectedIndex] -
-                   Convert.ToInt32(maskedTextBox1.Text);
-                    if (boat != null)
+                    try
                     {
+                        var boat = parking[listBoxLevels.SelectedIndex] -
+                       Convert.ToInt32(maskedTextBox1.Text);
                         Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width,
                        pictureBoxTakeBoat.Height);
                         Graphics gr = Graphics.FromImage(bmp);
@@ -114,55 +73,70 @@ namespace WindowsFormsBoats
                        pictureBoxTakeBoat.Height);
                         boat.DrawBoat(gr);
                         pictureBoxTakeBoat.Image = bmp;
+                        logger.Info("Изъято судно " + boat.ToString() + " с места " + maskedTextBox1.Text);
+                        Draw();
                     }
-                    else
+                    catch (PortNotFoundException ex)
                     {
+                        MessageBox.Show(ex.Message, "Не найдено", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
                         Bitmap bmp = new Bitmap(pictureBoxTakeBoat.Width,
                        pictureBoxTakeBoat.Height);
                         pictureBoxTakeBoat.Image = bmp;
                     }
-                    Draw();
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
-       
+
         /// <summary>
         /// Метод обработки выбора элемента на listBoxLevels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listBoxLevels_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void listBoxLevels_SelectedIndexChanged(object sender, EventArgs e)
         {
             Draw();
         }
 
-    /// <summary>
-    /// Обработка нажатия кнопки "Добавить лодку"
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void buttonSetBoat_Click(object sender, EventArgs e)
-    {
-        form = new FormBoatConfig();
-        form.AddEvent(AddBoat);
-        form.Show();
-    }
+        /// <summary>
+        /// Обработка нажатия кнопки "Добавить лодку"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSetBoat_Click(object sender, EventArgs e)
+        {
+            form = new FormBoatConfig();
+            form.AddEvent(AddBoat);
+            form.Show();
+        }
         /// <summary>
         /// Метод добавления судна
         /// </summary>
-        /// <param name="car"></param>
         private void AddBoat(IBoat boat)
         {
             if (boat != null && listBoxLevels.SelectedIndex > -1)
             {
-                int place = parking[listBoxLevels.SelectedIndex] + boat;
-                if (place > -1)
+                try
                 {
+                    int place = parking[listBoxLevels.SelectedIndex] + boat;
+                    logger.Info("Добавлено судно " + boat.ToString() + " на место " +
+                    place);
                     Draw();
                 }
-                else
+                catch (PortOverflowException ex)
                 {
-                    MessageBox.Show("Судно не удалось поставить");
+                    MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -171,41 +145,50 @@ namespace WindowsFormsBoats
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void СохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (parking.SaveData(saveFileDialog1.FileName))
+                try
                 {
+                    parking.SaveData(saveFileDialog1.FileName);
                     MessageBox.Show("Сохранение прошло успешно", "Результат",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Сохранено в файл " + saveFileDialog1.FileName);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
         /// <summary>
         /// Обработка нажатия пункта меню "Загрузить"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
-        private void загрузитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ЗагрузитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (parking.LoadData(openFileDialog1.FileName))
+                try
                 {
+                    parking.LoadData(openFileDialog1.FileName);
                     MessageBox.Show("Загрузили", "Результат", MessageBoxButtons.OK,
-                   MessageBoxIcon.Information);
+                    MessageBoxIcon.Information);
+                    logger.Info("Загружено из файла " + openFileDialog1.FileName);
                 }
-                else
+                catch (PortOccupiedPlaceException ex)
                 {
-                    MessageBox.Show("Не загрузили", "Результат", MessageBoxButtons.OK,
+                    MessageBox.Show(ex.Message, "Занятое место", MessageBoxButtons.OK,
                    MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 Draw();
             }
