@@ -49,7 +49,53 @@ namespace WindowsFormsBoats
                 parking[listBoxLevels.SelectedIndex].Draw(gr);
                 pictureBoxPort.Image = bmp;
             }
-       }
+        }
+
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPortCatamaran_Click(object sender, EventArgs e)
+        {
+            if (listBoxLevels.SelectedIndex > -1)
+            {
+                ColorDialog dialog = new ColorDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var catamaran = new Boat(100, 1000, dialog.Color);
+                    int place = parking[listBoxLevels.SelectedIndex] + catamaran;
+                    if (place == -1)
+                    {
+                        MessageBox.Show("Нет свободных мест", "Ошибка",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    Draw();
+                }
+            }
+        }
+
+
+        private void buttonPortBoat_Click(object sender, EventArgs e)
+        {
+            if (listBoxLevels.SelectedIndex > -1)
+            {
+                ColorDialog dialog = new ColorDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    ColorDialog dialogDop = new ColorDialog();
+                    if (dialogDop.ShowDialog() == DialogResult.OK)
+                    {
+                        var catamaran = new Catamaran(100, 1000, dialog.Color, dialogDop.Color, true, true); 
+                        int place = parking[listBoxLevels.SelectedIndex] + catamaran;
+                        if (place == -1)
+                        {
+                            MessageBox.Show("Нет свободных мест", "Ошибка",
+                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        Draw();
+                    }
+                }
+            }
+        }
 
         private void buttonTake_Click(object sender, EventArgs e)
         {
@@ -79,20 +125,19 @@ namespace WindowsFormsBoats
                 }
             }
         }
+       
         /// <summary>
         /// Метод обработки выбора элемента на listBoxLevels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
         private void listBoxLevels_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             Draw();
         }
 
-
     /// <summary>
-    /// Обработка нажатия кнопки "Добавить автомобиль"
+    /// Обработка нажатия кнопки "Добавить лодку"
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -102,9 +147,8 @@ namespace WindowsFormsBoats
         form.AddEvent(AddBoat);
         form.Show();
     }
-
         /// <summary>
-        /// Метод добавления машины
+        /// Метод добавления судна
         /// </summary>
         /// <param name="car"></param>
         private void AddBoat(IBoat boat)
@@ -118,8 +162,52 @@ namespace WindowsFormsBoats
                 }
                 else
                 {
-                    MessageBox.Show("Машину не удалось поставить");
+                    MessageBox.Show("Судно не удалось поставить");
                 }
+            }
+        }
+        /// <summary>
+        /// Обработка нажатия пункта меню "Сохранить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (parking.SaveData(saveFileDialog1.FileName))
+                {
+                    MessageBox.Show("Сохранение прошло успешно", "Результат",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
+            }
+        }
+        /// <summary>
+        /// Обработка нажатия пункта меню "Загрузить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void загрузитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (parking.LoadData(openFileDialog1.FileName))
+                {
+                    MessageBox.Show("Загрузили", "Результат", MessageBoxButtons.OK,
+                   MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Не загрузили", "Результат", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
+                Draw();
             }
         }
     }

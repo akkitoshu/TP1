@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace WindowsFormsBoats
 {
@@ -9,7 +10,7 @@ namespace WindowsFormsBoats
         /// Ширина отрисовки лодки
         /// </summary>
         protected const int boatHeight = 60;
-        
+
         /// Конструктор
         /// </summary>
         /// <param name="maxSpeed">Максимальная скорость</param>
@@ -21,6 +22,22 @@ namespace WindowsFormsBoats
             Weight = weight;
             MainColor = mainColor;
         }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="info">Информация по объекту</param>
+        public Boat(string info)
+        {
+            string[] strs = info.Split(';');
+            if (strs.Length == 3)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+            }
+        }
+
         public override void MoveTransport(Direction direction)
         {
             float step = MaxSpeed * 100 / Weight;
@@ -61,11 +78,14 @@ namespace WindowsFormsBoats
             Brush corpus = new SolidBrush(MainColor);
             g.FillRectangle(corpus, _startPosX + 30, _startPosY + 20, 75, 30);
             g.FillEllipse(corpus, _startPosX + 79, _startPosY + 20, 40, 30);
-            g.FillEllipse(corpus, _startPosX , _startPosY + 20, 40, 30);
+            g.FillEllipse(corpus, _startPosX, _startPosY + 20, 40, 30);
             Brush bort = new SolidBrush(Color.Brown);
             g.FillRectangle(bort, _startPosX + 10, _startPosY + 20, 95, 5);
             g.FillRectangle(bort, _startPosX + 10, _startPosY + 48, 95, 5);
         }
-
+        public override string ToString()
+        {
+            return MaxSpeed + ";" + Weight + ";" + MainColor.Name;
+        }
     }
 }
