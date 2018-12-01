@@ -188,11 +188,6 @@ DragDropEffects.Copy);
             eventAddBoat?.Invoke(boat);
             Close();
         }
-
-        private void AddBoat_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 
