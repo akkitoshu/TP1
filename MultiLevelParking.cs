@@ -12,7 +12,7 @@ namespace WindowsFormsBoats
     public class MultiLevelParking
     {
         /// <summary>
-        /// Список с уровнями парковки
+        /// Список с уровнями гавани
         /// </summary>
         List<Port<IBoat>> parkingStages;
         /// <summary>
@@ -30,7 +30,7 @@ namespace WindowsFormsBoats
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="countStages">Количество уровенй парковки</param>
+        /// <param name="countStages">Количество уровенй гавани</param>
         /// <param name="pictureWidth"></param>
         /// <param name="pictureHeight"></param>
         public MultiLevelParking(int countStages, int pictureWidth, int pictureHeight)
@@ -61,7 +61,7 @@ namespace WindowsFormsBoats
             }
         }
         /// <summary>
-        /// Сохранение информации по суднам на парковках в файл
+        /// Сохранение информации по суднам на гавани в файл
         /// </summary>
         /// <param name="filename">Путь и имя файла</param>
         public void SaveData(string filename)
@@ -72,54 +72,42 @@ namespace WindowsFormsBoats
             }
             using (FileStream fs = new FileStream(filename, FileMode.Create))
             {
-                using (BufferedStream bs = new BufferedStream(fs))
+                //Записываем количество уровней
+                WriteToFile("CountLeveles:" + parkingStages.Count + Environment.NewLine,
+               fs);
+                foreach (var level in parkingStages)
                 {
-
-                    //Записываем количество уровней
-                    WriteToFile("CountLeveles:" + parkingStages.Count +
-                   Environment.NewLine, fs);
-                    foreach (var level in parkingStages)
+                    //Начинаем уровень
+                    WriteToFile("Level" + Environment.NewLine, fs);
+                    foreach (IBoat boat in level)
                     {
-                        //Начинаем уровень
-                        WriteToFile("Level" + Environment.NewLine, fs);
-                        for (int i = 0; i < countPlaces; i++)
+                        //Записываем тип судна
+                        if (boat.GetType().Name == "Boat")
                         {
-                            var boat = level[i];
-                            try
-                            {
-                                //если место не пустое
-                                //Записываем тип судна
-                                if (boat.GetType().Name == "Boat")
-                                {
-                                    WriteToFile(i + ":Boat:", fs);
-                                }
-                                if (boat.GetType().Name == "Catamaran")
-                                {
-                                    WriteToFile(i + ":Catamaran:", fs);
-                                }
-                                //Записываемые параметры
-                                WriteToFile(boat + Environment.NewLine, fs);
-                            }
-                               
-                            finally { }
+                            WriteToFile(level.GetKey + ":Boat:", fs);
                         }
+                        if (boat.GetType().Name == "Catamaran")
+                        {
+                            WriteToFile(level.GetKey + ":Catamaran:", fs);
+                        }
+                        //Записываемые параметры
+                        WriteToFile(boat + Environment.NewLine, fs);
                     }
                 }
-
             }
         }
-            /// <summary>
-            /// Метод записи информации в файл
-            /// </summary>
-            /// <param name="text">Строка, которую следует записать</param>
-            /// <param name="stream">Поток для записи</param>
-            private void WriteToFile(string text, FileStream stream)
+        /// <summary>
+        /// Метод записи информации в файл
+        /// </summary>
+        /// <param name="text">Строка, которую следует записать</param>
+        /// <param name="stream">Поток для записи</param>
+        private void WriteToFile(string text, FileStream stream)
             {
                 byte[] info = new UTF8Encoding(true).GetBytes(text);
                 stream.Write(info, 0, info.Length);
             }
             /// <summary>
-            /// Загрузка нформации по автомобилям на парковках из файла
+            /// Загрузка нформации по суднам в порту из файла
             /// </summary>
             /// <param name="filename"></param>
             public void LoadData(string filename)
@@ -186,5 +174,12 @@ namespace WindowsFormsBoats
                     parkingStages[counter][Convert.ToInt32(strs[i].Split(':')[0])] = boat;
                 }
             }
+            /// <summary>
+            /// Сортировка уровней
+            /// </summary>
+            public void Sort()
+            {
+                parkingStages.Sort();
+            }
         }
-    }
+    } 

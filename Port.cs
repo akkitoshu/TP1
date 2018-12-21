@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -8,14 +10,15 @@ namespace WindowsFormsBoats
     /// Параметризованный класс для хранения набора объектов от интерфейса IBoat
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Port<T> where T : class, IBoat
+    public class Port<T> : IEnumerator<T>, IEnumerable<T>, IComparable<Port<T>>
+        where T : class, IBoat
     {
         /// <summary>
         /// Массив объектов, которые храним
         /// </summary>
         private Dictionary<int, T> _places;
         /// <summary>
-        /// Максимальное количество мест на парковке
+        /// Максимальное количество мест  в гавани
         /// </summary>
         private int _maxCount;
         /// <summary>
@@ -29,21 +32,31 @@ namespace WindowsFormsBoats
         /// <summary>
         /// Размер гавани (ширина)
         /// </summary>
-        private int _placeSizeWidth = 210;
+        private const int _placeSizeWidth = 210;
         /// <summary>
         /// Размер гавани (высота)
         /// </summary>
-        private int _placeSizeHeight = 80;
+        private const int _placeSizeHeight = 80;
         /// <summary>
-        /// Конструктор
+        /// Текущий элемент для вывода через IEnumerator (будет обращаться по своему индексу к ключу словаря, по которому будет возвращаться запись)
         /// </summary>
-        /// <param name="sizes">Количество мест на парковке</param>
-        /// <param name="pictureWidth">Рамзер парковки - ширина</param>
-        /// <param name="pictureHeight">Рамзер парковки - высота</param>
+        private int _currentIndex;
+        /// <summary>
+        /// Получить порядковое место в гавани
+        /// </summary>
+        public int GetKey
+        {
+            get
+            {
+                return _places.Keys.ToList()[_currentIndex];
+            }
+        }
+
         public Port(int sizes, int pictureWidth, int pictureHeight)
         {
             _maxCount = sizes;
             _places = new Dictionary<int, T>();
+            _currentIndex = -1;
             PictureWidth = pictureWidth;
             PictureHeight = pictureHeight;
         }
@@ -61,19 +74,24 @@ namespace WindowsFormsBoats
             {
                 throw new PortOverflowException();
             }
+            if (p._places.ContainsValue(catamaran))
+            {
+                throw new PortAlreadyHaveException();
+            }
             for (int i = 0; i < p._maxCount; i++)
             {
                 if (p.CheckFreePlace(i))
                 {
                     p._places.Add(i, catamaran);
-                    p._places[i].SetPosition(5 + i / 5 * p._placeSizeWidth + 5,
-                     i % 5 * p._placeSizeHeight + 15, p.PictureWidth,
+                    p._places[i].SetPosition(5 + i / 5 * _placeSizeWidth + 5,
+                     i % 5 * _placeSizeHeight + 15, p.PictureWidth,
                     p.PictureHeight);
                     return i;
                 }
+
             }
             return -1;
-        }
+        }
 
         /// <summary>
         /// Перегрузка оператора вычитания
@@ -111,10 +129,9 @@ namespace WindowsFormsBoats
         public void Draw(Graphics g)
         {
             DrawMarking(g);
-            var keys = _places.Keys.ToList();
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var catamaran in _places)
             {
-                _places[keys[i]].DrawBoat(g);
+                catamaran.Value.DrawBoat(g);
             }
         }
 
@@ -167,5 +184,115 @@ namespace WindowsFormsBoats
                 }
             }
         }
+
+        /// <summary>
+        /// Метод интерфейса IEnumerator для получения текущего элемента
+        /// </summary>
+        public T Current
+        {
+            get
+            {
+                return _places[_places.Keys.ToList()[_currentIndex]];
+            }
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для получения текущего элемента
+        /// </summary>
+        object IEnumerator.Current
+        {
+            get
+            {
+                return Current;
+            }
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator, вызываемый при удалении объекта
+        /// </summary>
+        public void Dispose()
+        {
+            _places.Clear();
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для перехода к следующему элементу или начал коллекции
+        /// </summary>
+        /// <returns></returns>
+        public bool MoveNext()
+        {
+            if (_currentIndex + 1 >= _places.Count)
+            {
+                Reset();
+                return false;
+            }
+            _currentIndex++;
+            return true;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerator для сброса и возврата к началу коллекции
+        /// </summary>
+        public void Reset()
+        {
+            _currentIndex = -1;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerable
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this;
+        }
+        /// <summary>
+        /// Метод интерфейса IEnumerable
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        /// <summary>
+        /// Метод интерфейса IComparable
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Port<T> other)
+        {
+            if (_places.Count > other._places.Count)
+            {
+                return -1;
+            }
+            else if (_places.Count < other._places.Count)
+            {
+                return 1;
+            }
+            else if (_places.Count > 0)
+            {
+                var thisKeys = _places.Keys.ToList();
+                var otherKeys = other._places.Keys.ToList();
+                for (int i = 0; i < _places.Count; ++i)
+                {
+                    if (_places[thisKeys[i]] is Boat && other._places[thisKeys[i]] is
+                   Catamaran)
+                    {
+                        return 1;
+                    }
+                    if (_places[thisKeys[i]] is Catamaran && other._places[thisKeys[i]] is
+                    Boat)
+                    {
+                        return -1;
+                    }
+                    if (_places[thisKeys[i]] is Boat && other._places[thisKeys[i]] is Boat)
+                    {
+                        return (_places[thisKeys[i]] is
+                       Boat).CompareTo(other._places[thisKeys[i]] is Boat);
+                    }
+                    if (_places[thisKeys[i]] is Catamaran && other._places[thisKeys[i]] is
+                    Catamaran)
+                    {
+                        return (_places[thisKeys[i]] is Catamaran).CompareTo(other._places[thisKeys[i]] is Catamaran);
+                    }
+                }
+            }
+            return 0;
+        }
     }
-}
+}
