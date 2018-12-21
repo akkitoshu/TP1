@@ -12,7 +12,7 @@ namespace WindowsFormsBoats
     public class MultiLevelParking
     {
         /// <summary>
-        /// Список с уровнями парковки
+        /// Список с уровнями гавани
         /// </summary>
         List<Port<IBoat>> parkingStages;
         /// <summary>
@@ -30,7 +30,7 @@ namespace WindowsFormsBoats
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="countStages">Количество уровенй парковки</param>
+        /// <param name="countStages">Количество уровенй гавани</param>
         /// <param name="pictureWidth"></param>
         /// <param name="pictureHeight"></param>
         public MultiLevelParking(int countStages, int pictureWidth, int pictureHeight)
@@ -61,7 +61,7 @@ namespace WindowsFormsBoats
             }
         }
         /// <summary>
-        /// Сохранение информации по суднам на парковках в файл
+        /// Сохранение информации по суднам на гавани в файл
         /// </summary>
         /// <param name="filename">Путь и имя файла</param>
         public void SaveData(string filename)
@@ -72,118 +72,114 @@ namespace WindowsFormsBoats
             }
             using (FileStream fs = new FileStream(filename, FileMode.Create))
             {
-                using (BufferedStream bs = new BufferedStream(fs))
+                //Записываем количество уровней
+                WriteToFile("CountLeveles:" + parkingStages.Count + Environment.NewLine,
+               fs);
+                foreach (var level in parkingStages)
                 {
-
-                    //Записываем количество уровней
-                    WriteToFile("CountLeveles:" + parkingStages.Count +
-                   Environment.NewLine, fs);
-                    foreach (var level in parkingStages)
+                    //Начинаем уровень
+                    WriteToFile("Level" + Environment.NewLine, fs);
+                    foreach (IBoat boat in level)
                     {
-                        WriteToFile("Level" + Environment.NewLine, fs);
-                        foreach (var boat in level)
+                        //Записываем тип судна
+                        if (boat.GetType().Name == "Boat")
                         {
-                            //Записываем тип мшаины
-                            if (boat.GetType().Name == "Boat")
-                            {
-                                WriteToFile(":Car:", fs);
-                            }
-                            if (boat.GetType().Name == "Catamaran")
-                            {
-                                WriteToFile(":SportCar:", fs);
-                            }
-                            //Записываемые параметры
-                            WriteToFile(boat + Environment.NewLine, fs);
+                            WriteToFile(level.GetKey + ":Boat:", fs);
                         }
+                        if (boat.GetType().Name == "Catamaran")
+                        {
+                            WriteToFile(level.GetKey + ":Catamaran:", fs);
+                        }
+                        //Записываемые параметры
+                        WriteToFile(boat + Environment.NewLine, fs);
                     }
                 }
             }
         }
-
         /// <summary>
         /// Метод записи информации в файл
         /// </summary>
         /// <param name="text">Строка, которую следует записать</param>
         /// <param name="stream">Поток для записи</param>
         private void WriteToFile(string text, FileStream stream)
-        {
-            byte[] info = new UTF8Encoding(true).GetBytes(text);
-            stream.Write(info, 0, info.Length);
-        }
-        /// <summary>
-        /// Загрузка нформации по автомобилям на парковках из файла
-        /// </summary>
-        /// <param name="filename"></param>
-        public void LoadData(string filename)
-        {
-            if (!File.Exists(filename))
             {
-                throw new FileNotFoundException();
+                byte[] info = new UTF8Encoding(true).GetBytes(text);
+                stream.Write(info, 0, info.Length);
             }
-            string bufferTextFromFile = "";
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            /// <summary>
+            /// Загрузка нформации по суднам в порту из файла
+            /// </summary>
+            /// <param name="filename"></param>
+            public void LoadData(string filename)
             {
-                using (BufferedStream bs = new BufferedStream(fs))
+                if (!File.Exists(filename))
                 {
-                    byte[] b = new byte[fs.Length];
-                    UTF8Encoding temp = new UTF8Encoding(true);
-                    while (bs.Read(b, 0, b.Length) > 0)
+                    throw new FileNotFoundException();
+                }
+                string bufferTextFromFile = "";
+                using (FileStream fs = new FileStream(filename, FileMode.Open))
+                {
+                    using (BufferedStream bs = new BufferedStream(fs))
                     {
-                        bufferTextFromFile += temp.GetString(b);
+                        byte[] b = new byte[fs.Length];
+                        UTF8Encoding temp = new UTF8Encoding(true);
+                        while (bs.Read(b, 0, b.Length) > 0)
+                        {
+                            bufferTextFromFile += temp.GetString(b);
+                        }
                     }
                 }
+                bufferTextFromFile = bufferTextFromFile.Replace("\r", "");
+                var strs = bufferTextFromFile.Split('\n');
+                if (strs[0].Contains("CountLeveles"))
+                {
+                    //считываем количество уровней
+                    int count = Convert.ToInt32(strs[0].Split(':')[1]);
+                    if (parkingStages != null)
+                    {
+                        parkingStages.Clear();
+                    }
+                    parkingStages = new List<Port<IBoat>>(count);
+                }
+                else
+                {
+                    //если нет такой записи, то это не те данные
+                    throw new Exception("Неверный формат файла");
+                }
+                int counter = -1;
+                IBoat boat = null;
+                for (int i = 1; i < strs.Length; ++i)
+                {
+                    //идем по считанным записям
+                    if (strs[i] == "Level")
+                    {
+                        //начинаем новый уровень
+                        counter++;
+                        parkingStages.Add(new Port<IBoat>(countPlaces, pictureWidth,
+                        pictureHeight));
+                        continue;
+                    }
+                    if (string.IsNullOrEmpty(strs[i]))
+                    {
+                        continue;
+                    }
+                    if (strs[i].Split(':')[1] == "Boat")
+                    {
+                        boat = new Boat(strs[i].Split(':')[2]);
+                    }
+                    else if (strs[i].Split(':')[1] == "Catamaran")
+                    {
+                        boat = new Catamaran(strs[i].Split(':')[2]);
+                    }
+                    parkingStages[counter][Convert.ToInt32(strs[i].Split(':')[0])] = boat;
+                }
             }
-            bufferTextFromFile = bufferTextFromFile.Replace("\r", "");
-            var strs = bufferTextFromFile.Split('\n');
-            if (strs[0].Contains("CountLeveles"))
+            /// <summary>
+            /// Сортировка уровней
+            /// </summary>
+            public void Sort()
             {
-                //считываем количество уровней
-                int count = Convert.ToInt32(strs[0].Split(':')[1]);
-                if (parkingStages != null)
-                {
-                    parkingStages.Clear();
-                }
-                parkingStages = new List<Port<IBoat>>(count);
-            }
-            else
-            {
-                //если нет такой записи, то это не те данные
-                throw new Exception("Неверный формат файла");
-            }
-            int counter = -1;
-            IBoat boat = null;
-            for (int i = 1; i < strs.Length; ++i)
-            {
-                //идем по считанным записям
-                if (strs[i] == "Level")
-                {
-                    //начинаем новый уровень
-                    counter++;
-                    parkingStages.Add(new Port<IBoat>(countPlaces, pictureWidth,
-                    pictureHeight));
-                    continue;
-                }
-                if (string.IsNullOrEmpty(strs[i]))
-                {
-                    continue;
-                }
-                if (strs[i].Split(':')[1] == "Boat")
-                {
-                    boat = new Boat(strs[i].Split(':')[2]);
-                }
-                else if (strs[i].Split(':')[1] == "Catamaran")
-                {
-                    boat = new Catamaran(strs[i].Split(':')[2]);
-                }
-                parkingStages[counter][Convert.ToInt32(strs[i].Split(':')[0])] = boat;
+                parkingStages.Sort();
             }
         }
-        /// <summary>
-        /// Сортировка уровней
-        /// </summary>
-        public void Sort()
-        {
-            parkingStages.Sort();
-        }
-    }
-}
+    } 

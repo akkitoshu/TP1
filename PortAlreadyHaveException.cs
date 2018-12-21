@@ -6,7 +6,7 @@ using System.Text;
 namespace WindowsFormsBoats
 {
     /// <summary>
-    /// Класс-ошибка "Если на парковке уже есть автомобиль с такими же характеристиками"
+    /// Класс-ошибка "Если на парковке уже есть судно с такими же характеристиками"
     /// </summary>
     public class PortAlreadyHaveException : Exception
     {

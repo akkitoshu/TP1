@@ -123,6 +123,10 @@ namespace WindowsFormsBoats
             {
                 return false;
             }
+            if (GetType().Name != other.GetType().Name)
+            {
+                return false;
+            }
             if (MaxSpeed != other.MaxSpeed)
             {
                 return false;
@@ -148,14 +152,15 @@ namespace WindowsFormsBoats
             {
                 return false;
             }
-            Boat carObj = obj as Boat;
-            if (carObj == null)
+
+            Boat boatObj = obj as Boat;
+            if (boatObj == null)
             {
                 return false;
             }
             else
             {
-                return Equals(carObj);
+                return Equals(boatObj);
             }
         }
         /// <summary>

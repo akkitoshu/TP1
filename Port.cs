@@ -18,7 +18,7 @@ namespace WindowsFormsBoats
         /// </summary>
         private Dictionary<int, T> _places;
         /// <summary>
-        /// Максимальное количество мест на парковке
+        /// Максимальное количество мест  в гавани
         /// </summary>
         private int _maxCount;
         /// <summary>
@@ -32,21 +32,26 @@ namespace WindowsFormsBoats
         /// <summary>
         /// Размер гавани (ширина)
         /// </summary>
-        private int _placeSizeWidth = 210;
+        private const int _placeSizeWidth = 210;
         /// <summary>
         /// Размер гавани (высота)
         /// </summary>
-        private int _placeSizeHeight = 80;
+        private const int _placeSizeHeight = 80;
         /// <summary>
-        /// Текущий элемент для вывода через IEnumerator (будет обращаться по своему индексу к ключу словаря, по которму будет возвращаться запись)
+        /// Текущий элемент для вывода через IEnumerator (будет обращаться по своему индексу к ключу словаря, по которому будет возвращаться запись)
         /// </summary>
         private int _currentIndex;
         /// <summary>
-        /// Конструктор
+        /// Получить порядковое место в гавани
         /// </summary>
-        /// <param name="sizes">Количество мест на парковке</param>
-        /// <param name="pictureWidth">Рамзер парковки - ширина</param>
-        /// <param name="pictureHeight">Рамзер парковки - высота</param>
+        public int GetKey
+        {
+            get
+            {
+                return _places.Keys.ToList()[_currentIndex];
+            }
+        }
+
         public Port(int sizes, int pictureWidth, int pictureHeight)
         {
             _maxCount = sizes;
@@ -69,30 +74,21 @@ namespace WindowsFormsBoats
             {
                 throw new PortOverflowException();
             }
+            if (p._places.ContainsValue(catamaran))
+            {
+                throw new PortAlreadyHaveException();
+            }
             for (int i = 0; i < p._maxCount; i++)
             {
                 if (p.CheckFreePlace(i))
                 {
                     p._places.Add(i, catamaran);
-                    p._places[i].SetPosition(5 + i / 5 * p._placeSizeWidth + 5,
-                     i % 5 * p._placeSizeHeight + 15, p.PictureWidth,
+                    p._places[i].SetPosition(5 + i / 5 * _placeSizeWidth + 5,
+                     i % 5 * _placeSizeHeight + 15, p.PictureWidth,
                     p.PictureHeight);
                     return i;
                 }
-                else if (catamaran.GetType() == p._places[i].GetType())
-                {
-                    if (catamaran is Catamaran)
-                    {
-                        if ((catamaran as Catamaran).Equals(p._places[i]))
-                        {
-                            throw new PortAlreadyHaveException();
-                        }
-                    }
-                    else if ((catamaran as Boat).Equals(p._places[i]))
-                    {
-                        throw new PortAlreadyHaveException();
-                    }
-                }
+
             }
             return -1;
         }
@@ -292,8 +288,7 @@ namespace WindowsFormsBoats
                     if (_places[thisKeys[i]] is Catamaran && other._places[thisKeys[i]] is
                     Catamaran)
                     {
-                        return (_places[thisKeys[i]] is
-                       Catamaran).CompareTo(other._places[thisKeys[i]] is Catamaran);
+                        return (_places[thisKeys[i]] is Catamaran).CompareTo(other._places[thisKeys[i]] is Catamaran);
                     }
                 }
             }

@@ -18,7 +18,6 @@ namespace WindowsFormsBoats
         /// 
         /// </summary>
         /// 
-        ///  /// <param name="engine">Признак наличия двигателя</param>
         public Catamaran(int maxSpeed, float weight, Color mainColor, Color dopColor, bool gruzleft, bool gruzright) :
             base(maxSpeed, weight, mainColor)
         {
@@ -112,6 +111,10 @@ namespace WindowsFormsBoats
             {
                 return res;
             }
+            if (GetType().Name != other.GetType().Name)
+            {
+                return false;
+            }
             if (DopColor != other.DopColor)
             {
                 return false;
@@ -137,14 +140,14 @@ namespace WindowsFormsBoats
             {
                 return false;
             }
-            Catamaran carObj = obj as Catamaran;
-            if (carObj == null)
+            Catamaran boatObj = obj as Catamaran;
+            if (boatObj == null)
             {
                 return false;
             }
             else
             {
-                return Equals(carObj);
+                return Equals(boatObj);
             }
         }
         /// <summary>
